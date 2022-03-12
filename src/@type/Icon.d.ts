@@ -1,5 +1,14 @@
 type IconSizeType = 'small' | 'medium' | 'large';
-type IconType = 'dotsHorizontal' | 'search' | 'plus' | 'chevron-left' | 'chevron-right' | 'menu';
+type IconType =
+  | 'calendar'
+  | 'chevron-left'
+  | 'chevron-right'
+  | 'dotsHorizontal'
+  | 'home'
+  | 'menu'
+  | 'plus'
+  | 'search'
+  | 'user-circle';
 
 interface IconProps {
   icon: IconType;

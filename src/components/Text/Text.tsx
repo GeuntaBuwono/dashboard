@@ -16,7 +16,7 @@ const TextPStyled = styled.p<TextInterface>`
 `;
 
 const Text = ({ children, color, size, transform, weight }: TextInterface) => (
-  <TextPStyled color={color} size={size} transform={transform} weight={weight}>
+  <TextPStyled color={color} size={size} transform={transform} weight={weight} className="truncate">
     {children}
   </TextPStyled>
 );

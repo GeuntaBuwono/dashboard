@@ -4,26 +4,39 @@ import { Color } from '@styles/colors';
 import Image from 'next/image';
 import React from 'react';
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  const handleOpenMenu = () => undefined;
-  return (
-    <>
-      <div className="flex flex-1 p-5 bg-white">
-        <div className="flex flex-1">
-          <div className="mr-2 md:hidden" onClick={handleOpenMenu}>
-            <Icon icon="menu" size="medium" color={Color.Gray} />
-          </div>
-          <Image layout="intrinsic" src="/vercel.svg" alt="User Image" width={50} height={50} />
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => (
+  <>
+    <div className="flex flex-1 p-5 bg-white">
+      <div className="flex flex-1">
+        <div className="mr-2 md:hidden">
+          <Icon icon="menu" size="medium" color={Color.Gray} />
         </div>
-        <div className="flex-row items-center mr-2 hidden md:flex">
-          <Text>Hello</Text>
-          <Text color={Color.Orange}>, Shipper User</Text>
-        </div>
-        <Image layout="intrinsic" src="/avatar.png" alt="User Image" width={50} height={50} />
+        <Image layout="intrinsic" src="/vercel.svg" alt="User Image" width={50} height={50} />
       </div>
-      {children}
-    </>
-  );
-};
+      <div className="flex-row items-center mr-2 hidden md:flex">
+        <Text>Hello</Text>
+        <Text color={Color.Orange}>, Shipper User</Text>
+      </div>
+      <Image layout="intrinsic" src="/avatar.png" alt="User Image" width={50} height={50} />
+    </div>
+    <div className="flex flex-1">
+      <ul className="hidden md:flex flex-col px-6 mt-6 space-y-5 w-1/6">
+        <li className="flex space-x-3">
+          <Icon icon="home" size="small" />
+          <Text>Beranda</Text>
+        </li>
+        <li className="flex space-x-3">
+          <Icon icon="user-circle" size="small" />
+          <Text>Driver Management</Text>
+        </li>
+        <li className="flex space-x-3">
+          <Icon icon="calendar" size="small" />
+          <Text>Pickup</Text>
+        </li>
+      </ul>
+      <div className="h-full w-full md:h-screen">{children}</div>
+    </div>
+  </>
+);
 
 export default DashboardLayout;
