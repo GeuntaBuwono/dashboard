@@ -86,8 +86,8 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
             <button
               className="flex flex-1 px-2 py-4 mt-4 rounded-sm md:mt-0 md:items-center"
               style={{ backgroundColor: Color.Orange }}
-              type="submit"
-              disabled={!formik.values.searchQuery}
+              type="button"
+              disabled
             >
               <div className="mr-2">
                 <Text color="white" weight="bold" transform="uppercase">
