@@ -7,11 +7,12 @@ import { Color } from '@styles/colors';
 import { useFormik } from 'formik';
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
+import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { getUsers } from 'services/users';
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const users = await getUsers({});
+  const users = await getUsers();
   return {
     props: {
       users
@@ -23,26 +24,33 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
   const formik = useFormik({
     initialValues: {
       searchQuery: '',
-      page: 1
+      page: 0,
+      hasPrev: false,
+      hasNext: true
     },
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
     }
   });
 
-  const { data, isSuccess, isLoading, isFetching } = useQuery<{
-    results: Array<UserInterface>;
-    info: UserInfoInterface;
-  }>(
+  const { data, isSuccess, isLoading, isFetching } = useQuery<Array<UserInterface>>(
     ['users', formik.values.page],
-    () =>
-      getUsers({
-        page: formik.values.page
-      }),
-    { initialData: props.users, refetchOnWindowFocus: false, keepPreviousData: true }
+    getUsers,
+    {
+      initialData: props.users,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true
+    }
   );
 
-  const isNoPrevData = data?.info.page === 1;
+  useEffect(() => {
+    formik.setFieldValue('hasPrev', formik.values.page !== 0);
+    formik.setFieldValue('hasNext', formik.values.page !== 5);
+
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values.page]);
+
   const handleNavigation = ({ type }: { type: 'prev' | 'next' }) => {
     if (type === 'prev') {
       formik.setFieldValue('page', formik.values.page - 1);
@@ -109,7 +117,7 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
             isSuccess && (
               <div className="flex flex-1 flex-col">
                 <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row">
-                  {data?.results.map((item, index) => {
+                  {data?.map((item, index) => {
                     const id =
                       item.id.value || item.id.name ? item.id.value + item.id.name : String(index);
 
@@ -131,22 +139,34 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
                 </div>
                 <div className="flex py-5 justify-evenly w-1/2 self-center">
                   <div
-                    className={`flex ${isNoPrevData ? 'cursor-default' : 'cursor-pointer'}`}
-                    onClick={() => (isNoPrevData ? undefined : handleNavigation({ type: 'prev' }))}
+                    className={`flex ${
+                      formik.values.hasPrev ? 'cursor-pointer' : 'cursor-default'
+                    }`}
+                    onClick={() =>
+                      formik.values.hasPrev ? handleNavigation({ type: 'prev' }) : undefined
+                    }
                   >
                     <Icon
                       icon="chevron-left"
                       size="small"
-                      color={isNoPrevData ? Color.Gray : Color.Black}
+                      color={formik.values.hasPrev ? Color.Black : Color.Gray}
                     />
-                    <Text color={isNoPrevData ? Color.Gray : Color.Black}>Previous Page</Text>
+                    <Text color={formik.values.hasPrev ? Color.Black : Color.Gray}>
+                      Previous Page
+                    </Text>
                   </div>
                   <div
                     className="flex cursor-pointer"
-                    onClick={() => handleNavigation({ type: 'next' })}
+                    onClick={() =>
+                      formik.values.hasNext ? handleNavigation({ type: 'next' }) : undefined
+                    }
                   >
-                    <Text>Next Page</Text>
-                    <Icon icon="chevron-right" size="small" />
+                    <Text color={formik.values.hasNext ? Color.Black : Color.Gray}>Next Page</Text>
+                    <Icon
+                      icon="chevron-right"
+                      size="small"
+                      color={formik.values.hasNext ? Color.Black : Color.Gray}
+                    />
                   </div>
                 </div>
               </div>
