@@ -13,12 +13,19 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
     "incremental": true,
     "baseUrl": "src",
     "types": [
       "cypress"
     ],
     "paths": {
+      "@components/*": ["./components/*"],
       "@pages/*": ["./pages/*"],
       "@styles/*": ["./styles/*"]
     }
