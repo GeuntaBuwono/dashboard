@@ -25,6 +25,8 @@ const Home: NextPage = () => {
     }
   });
 
+  const handleNavigation = ({}: { type: 'prev' | 'next' }) => {};
+
   return (
     <div className="h-screen">
       <Head>
@@ -81,6 +83,16 @@ const Home: NextPage = () => {
           <CardDriver {...driverData} />
           <CardDriver {...driverData} />
           <CardDriver {...driverData} />
+        </div>
+        <div className="flex py-5 justify-evenly w-1/2 self-center">
+          <div className="flex cursor-pointer" onClick={() => handleNavigation({ type: 'prev' })}>
+            <Icon icon="chevron-left" size="small" />
+            <Text>Previous Page</Text>
+          </div>
+          <div className="flex cursor-pointer" onClick={() => handleNavigation({ type: 'next' })}>
+            <Text>Next Page</Text>
+            <Icon icon="chevron-right" size="small" />
+          </div>
         </div>
       </div>
     </div>
