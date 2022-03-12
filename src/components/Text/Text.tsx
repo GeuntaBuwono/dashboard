@@ -11,11 +11,12 @@ const fontSizeMapper: Record<FontSizeType, string> = {
 const TextPStyled = styled.p<TextInterface>`
   color: ${({ color }) => color};
   font-size: ${({ size }) => fontSizeMapper[size || 'medium']};
+  font-weight: ${({ weight }) => weight};
   text-transform: ${({ transform }) => transform};
 `;
 
-const Text = ({ children, color, size, transform }: TextInterface) => (
-  <TextPStyled color={color} size={size} transform={transform}>
+const Text = ({ children, color, size, transform, weight }: TextInterface) => (
+  <TextPStyled color={color} size={size} transform={transform} weight={weight}>
     {children}
   </TextPStyled>
 );

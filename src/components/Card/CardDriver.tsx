@@ -6,7 +6,7 @@ import dateFormatter from 'utils/dateFormatter';
 
 const CardDriver = ({ firstName, lastName, telpNumber, email, birthDate, id }: CardDriverProps) => {
   return (
-    <div className="flex w-full mb-6 rounded-lg md:mb-0 md:mr-6 bg-white">
+    <div className="flex w-full mb-6 rounded-lg lg:mb-0 md:mr-6 bg-white">
       <div className="flex flex-1 flex-col">
         <div className="flex border-b-2 py-2 px-4">
           <div className="flex">

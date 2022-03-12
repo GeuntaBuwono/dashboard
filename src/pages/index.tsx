@@ -1,4 +1,5 @@
 import { CardDriver } from '@components/Card';
+import { Text } from '@components/Text';
 import { Color } from '@styles/colors';
 import type { NextPage } from 'next';
 import Head from 'next/head';
@@ -25,6 +26,14 @@ const Home: NextPage = () => {
         className="flex flex-col flex-1 h-screen p-6"
         style={{ backgroundColor: Color.GrayBase }}
       >
+        <div className="flex flex-col rounded-lg p-5 mb-5 bg-white ">
+          <Text color={Color.Orange} size="large" weight="bold">
+            Driver Management
+          </Text>
+          <Text color={Color.Gray} size="small">
+            Data driver yang berkerja dengan Anda
+          </Text>
+        </div>
         <div className="flex flex-col lg:flex-row">
           <CardDriver {...driverData} />
           <CardDriver {...driverData} />
