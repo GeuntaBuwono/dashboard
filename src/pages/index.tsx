@@ -4,19 +4,28 @@ import { Text } from '@components/Text';
 import DashboardLayout from '@layout/DashboardLayout';
 import { Color } from '@styles/colors';
 import { useFormik } from 'formik';
-import type { NextPage } from 'next';
+import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
 
-const driverData: CardDriverProps = {
-  id: '2815465RY',
-  firstName: 'first',
-  lastName: 'last',
-  birthDate: new Date(),
-  email: 'email@email.com',
-  telpNumber: '+6212345678'
+type Data = {
+  results: Array<UserInterface>;
+  info: UserInfoInterface;
 };
 
-const Home: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const res = await fetch('http://localhost:3000/api/user');
+  const data: Data = await res.json();
+
+  return {
+    props: {
+      data
+    }
+  };
+};
+
+const Home: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const userData: Data = data;
+
   const formik = useFormik({
     initialValues: {
       searchQuery: ''
@@ -76,11 +85,23 @@ const Home: NextPage = () => {
             </button>
           </form>
         </div>
-        <div className="flex flex-col lg:flex-row">
-          <CardDriver {...driverData} />
-          <CardDriver {...driverData} />
-          <CardDriver {...driverData} />
-          <CardDriver {...driverData} />
+        <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row lg:overflow-auto">
+          {userData.results.map((item, index) => {
+            if (index < 5) {
+              return (
+                <CardDriver
+                  key={index}
+                  id={item.id.value}
+                  firstName={item.name.first}
+                  lastName={item.name.last}
+                  telpNumber={item.phone}
+                  email={item.email}
+                  birthDate={new Date(item.dob.date)}
+                />
+              );
+            }
+            return null;
+          })}
         </div>
         <div className="flex py-5 justify-evenly w-1/2 self-center">
           <div className="flex cursor-pointer" onClick={() => handleNavigation({ type: 'prev' })}>

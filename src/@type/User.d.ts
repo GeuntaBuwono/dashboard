@@ -54,3 +54,10 @@ interface UserInterface {
   };
   nat: string;
 }
+
+interface UserInfoInterface {
+  seed: string;
+  results: number;
+  page: number;
+  version: string;
+}
