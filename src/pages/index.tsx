@@ -1,5 +1,6 @@
 import { CardDriver } from '@components/Card';
 import { Icon } from '@components/Icon';
+import { CardPlaceholder } from '@components/Placeholder';
 import { Text } from '@components/Text';
 import DashboardLayout from '@layout/DashboardLayout';
 import { Color } from '@styles/colors';
@@ -29,7 +30,7 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
     }
   });
 
-  const { data, isSuccess } = useQuery<{
+  const { data, isSuccess, isLoading, isFetching } = useQuery<{
     results: Array<UserInterface>;
     info: UserInfoInterface;
   }>(
@@ -97,44 +98,60 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
             </button>
           </form>
         </div>
-        <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row lg:overflow-auto">
-          {isSuccess &&
-            data?.results.map((item, index) => {
-              const id =
-                item.id.value || item.id.name ? item.id.value + item.id.name : String(index);
+        <div>
+          {isLoading || isFetching ? (
+            <div className="flex flex-row space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row">
+              {Array.from('123456', Number).map((index) => (
+                <CardPlaceholder key={index} />
+              ))}
+            </div>
+          ) : (
+            isSuccess && (
+              <div className="flex flex-1 flex-col">
+                <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row">
+                  {data?.results.map((item, index) => {
+                    const id =
+                      item.id.value || item.id.name ? item.id.value + item.id.name : String(index);
 
-              if (index < 5) {
-                return (
-                  <CardDriver
-                    id={id}
-                    key={index}
-                    firstName={item.name.first}
-                    lastName={item.name.last}
-                    telpNumber={item.phone}
-                    email={item.email}
-                    birthDate={new Date(item.dob.date)}
-                  />
-                );
-              }
-              return null;
-            })}
-        </div>
-        <div className="flex py-5 justify-evenly w-1/2 self-center">
-          <div
-            className={`flex ${isNoPrevData ? 'cursor-default' : 'cursor-pointer'}`}
-            onClick={() => (isNoPrevData ? undefined : handleNavigation({ type: 'prev' }))}
-          >
-            <Icon
-              icon="chevron-left"
-              size="small"
-              color={isNoPrevData ? Color.Gray : Color.Black}
-            />
-            <Text color={isNoPrevData ? Color.Gray : Color.Black}>Previous Page</Text>
-          </div>
-          <div className="flex cursor-pointer" onClick={() => handleNavigation({ type: 'next' })}>
-            <Text>Next Page</Text>
-            <Icon icon="chevron-right" size="small" />
-          </div>
+                    if (index < 5) {
+                      return (
+                        <CardDriver
+                          id={id}
+                          key={index}
+                          firstName={item.name.first}
+                          lastName={item.name.last}
+                          telpNumber={item.phone}
+                          email={item.email}
+                          birthDate={new Date(item.dob.date)}
+                        />
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+                <div className="flex py-5 justify-evenly w-1/2 self-center">
+                  <div
+                    className={`flex ${isNoPrevData ? 'cursor-default' : 'cursor-pointer'}`}
+                    onClick={() => (isNoPrevData ? undefined : handleNavigation({ type: 'prev' }))}
+                  >
+                    <Icon
+                      icon="chevron-left"
+                      size="small"
+                      color={isNoPrevData ? Color.Gray : Color.Black}
+                    />
+                    <Text color={isNoPrevData ? Color.Gray : Color.Black}>Previous Page</Text>
+                  </div>
+                  <div
+                    className="flex cursor-pointer"
+                    onClick={() => handleNavigation({ type: 'next' })}
+                  >
+                    <Text>Next Page</Text>
+                    <Icon icon="chevron-right" size="small" />
+                  </div>
+                </div>
+              </div>
+            )
+          )}
         </div>
       </div>
     </DashboardLayout>
