@@ -6,26 +6,19 @@ import { Color } from '@styles/colors';
 import { useFormik } from 'formik';
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
-
-type Data = {
-  results: Array<UserInterface>;
-  info: UserInfoInterface;
-};
+import { useQuery } from 'react-query';
+import { getUsers } from 'services/users';
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch('http://localhost:3000/api/user');
-  const data: Data = await res.json();
-
+  const users = await getUsers();
   return {
     props: {
-      data
+      users
     }
   };
 };
 
-const Home: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const userData: Data = data;
-
+const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const formik = useFormik({
     initialValues: {
       searchQuery: ''
@@ -34,6 +27,11 @@ const Home: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSi
       alert(JSON.stringify(values, null, 2));
     }
   });
+
+  const { data, isSuccess } = useQuery<{
+    results: Array<UserInterface>;
+    info: UserInfoInterface;
+  }>(['users'], getUsers, { initialData: props.users });
 
   const handleNavigation = ({}: { type: 'prev' | 'next' }) => {};
 
@@ -86,22 +84,26 @@ const Home: NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSi
           </form>
         </div>
         <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row lg:overflow-auto">
-          {userData.results.map((item, index) => {
-            if (index < 5) {
-              return (
-                <CardDriver
-                  key={index}
-                  id={item.id.value}
-                  firstName={item.name.first}
-                  lastName={item.name.last}
-                  telpNumber={item.phone}
-                  email={item.email}
-                  birthDate={new Date(item.dob.date)}
-                />
-              );
-            }
-            return null;
-          })}
+          {isSuccess &&
+            data?.results.map((item, index) => {
+              const id =
+                item.id.value || item.id.name ? item.id.value + item.id.name : String(index);
+
+              if (index < 5) {
+                return (
+                  <CardDriver
+                    id={id}
+                    key={index}
+                    firstName={item.name.first}
+                    lastName={item.name.last}
+                    telpNumber={item.phone}
+                    email={item.email}
+                    birthDate={new Date(item.dob.date)}
+                  />
+                );
+              }
+              return null;
+            })}
         </div>
         <div className="flex py-5 justify-evenly w-1/2 self-center">
           <div className="flex cursor-pointer" onClick={() => handleNavigation({ type: 'prev' })}>
