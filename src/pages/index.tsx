@@ -28,17 +28,14 @@ const Home: NextPage = () => {
   const handleNavigation = ({}: { type: 'prev' | 'next' }) => {};
 
   return (
-    <div className="h-screen">
+    <div className="h-full md:h-screen">
       <Head>
         <title>Dashboard</title>
         <meta name="description" content="Dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div
-        className="flex flex-col flex-1 h-screen p-6"
-        style={{ backgroundColor: Color.GrayBase }}
-      >
+      <div className="flex flex-col flex-1 h-full p-6" style={{ backgroundColor: Color.GrayBase }}>
         <div className="flex flex-col md:flex-row rounded-lg p-5 mb-5 bg-white ">
           <div className="flex flex-1 flex-col mb-4 md:mb-0">
             <Text color={Color.Orange} size="large" weight="bold" transform="uppercase">
