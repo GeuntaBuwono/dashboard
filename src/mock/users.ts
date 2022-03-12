@@ -224,7 +224,7 @@ export const users = {
   info: {
     seed: 'foobar',
     results: 10,
-    page: 2,
+    page: 1,
     version: '1.3'
   }
 };

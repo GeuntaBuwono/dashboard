@@ -35,6 +35,8 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
 
   const handleNavigation = ({}: { type: 'prev' | 'next' }) => {};
 
+  const isNoPrevData = data?.info.page === 1;
+
   return (
     <DashboardLayout>
       <Head>
@@ -106,9 +108,16 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
             })}
         </div>
         <div className="flex py-5 justify-evenly w-1/2 self-center">
-          <div className="flex cursor-pointer" onClick={() => handleNavigation({ type: 'prev' })}>
-            <Icon icon="chevron-left" size="small" />
-            <Text>Previous Page</Text>
+          <div
+            className={`flex ${isNoPrevData ? 'cursor-default' : 'cursor-pointer'}`}
+            onClick={() => (isNoPrevData ? undefined : handleNavigation({ type: 'prev' }))}
+          >
+            <Icon
+              icon="chevron-left"
+              size="small"
+              color={isNoPrevData ? Color.Gray : Color.Black}
+            />
+            <Text color={isNoPrevData ? Color.Gray : Color.Black}>Previous Page</Text>
           </div>
           <div className="flex cursor-pointer" onClick={() => handleNavigation({ type: 'next' })}>
             <Text>Next Page</Text>
