@@ -10,7 +10,7 @@ import { useQuery } from 'react-query';
 import { getUsers } from 'services/users';
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const users = await getUsers();
+  const users = await getUsers({});
   return {
     props: {
       users
@@ -21,7 +21,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const formik = useFormik({
     initialValues: {
-      searchQuery: ''
+      searchQuery: '',
+      page: 1
     },
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
@@ -31,11 +32,23 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
   const { data, isSuccess } = useQuery<{
     results: Array<UserInterface>;
     info: UserInfoInterface;
-  }>(['users'], getUsers, { initialData: props.users });
-
-  const handleNavigation = ({}: { type: 'prev' | 'next' }) => {};
+  }>(
+    ['users', formik.values.page],
+    () =>
+      getUsers({
+        page: formik.values.page
+      }),
+    { initialData: props.users, refetchOnWindowFocus: false, keepPreviousData: true }
+  );
 
   const isNoPrevData = data?.info.page === 1;
+  const handleNavigation = ({ type }: { type: 'prev' | 'next' }) => {
+    if (type === 'prev') {
+      formik.setFieldValue('page', formik.values.page - 1);
+    } else {
+      formik.setFieldValue('page', formik.values.page + 1);
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -44,7 +57,6 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
         <meta name="description" content="Dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <div className="flex flex-col flex-1 h-full p-6" style={{ backgroundColor: Color.GrayBase }}>
         <div className="flex flex-col md:flex-row rounded-lg p-5 mb-5 bg-white ">
           <div className="flex flex-1 flex-col mb-4 md:mb-0">
