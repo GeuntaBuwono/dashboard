@@ -1,5 +1,5 @@
 type IconSizeType = 'small' | 'medium' | 'large';
-type IconType = 'dotsHorizontal';
+type IconType = 'dotsHorizontal' | 'search' | 'plus';
 
 interface IconProps {
   icon: IconType;
