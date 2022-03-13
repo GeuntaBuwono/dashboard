@@ -1,8 +1,13 @@
+import { axiosInstance } from './axios.config';
+
 export const getUsers = async () => {
-  const res = await fetch(`http://localhost:3000/api/user`);
-  const data: {
+  const data = await axiosInstance.get<{
     results: Array<UserInterface>;
     info: UserInfoInterface;
-  } = await res.json();
-  return data.results;
+  }>('/api', {
+    params: {
+      results: 30
+    }
+  });
+  return data.data.results;
 };
