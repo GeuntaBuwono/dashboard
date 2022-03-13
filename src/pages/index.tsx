@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { getUsers } from 'services/users';
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -21,6 +21,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const queryClient = useQueryClient();
+
   const formik = useFormik({
     initialValues: {
       searchQuery: '',
@@ -29,17 +31,24 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
       hasNext: true
     },
     onSubmit: (values) => {
+      if (formik.values.searchQuery) {
+        const found: Array<UserInterface> | undefined = data?.filter((element) =>
+          element.name.first.toLowerCase().includes(formik.values.searchQuery.toLowerCase())
+        );
+        queryClient.setQueryData(['users', 0], () => found);
+      } else {
+        refetch();
+      }
       alert(JSON.stringify(values, null, 2));
     }
   });
 
-  const { data, isSuccess, isLoading, isFetching } = useQuery<Array<UserInterface>>(
+  const { data, isSuccess, isLoading, isFetching, refetch } = useQuery<Array<UserInterface>>(
     ['users', formik.values.page],
     getUsers,
     {
       initialData: props.users,
-      refetchOnWindowFocus: false,
-      keepPreviousData: true
+      refetchOnWindowFocus: false
     }
   );
 
