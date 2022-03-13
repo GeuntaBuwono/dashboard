@@ -115,71 +115,73 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
             </button>
           </form>
         </div>
-        <div>
+        <div className="flex flex-1 justify-center">
           {isLoading || isFetching ? (
-            <div className="flex flex-row space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row">
-              {Array.from('123456', Number).map((index) => (
+            <div className="flex flex-row space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row lg:overflow-auto">
+              {Array.from('12345679', Number).map((index) => (
                 <CardPlaceholder key={index} />
               ))}
             </div>
-          ) : (
-            isSuccess && (
-              <div className="flex flex-1 flex-col">
-                <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row">
-                  {data?.map((item, index) => {
-                    const id =
-                      item.id.value || item.id.name ? item.id.value + item.id.name : String(index);
+          ) : isSuccess && data.length > 0 ? (
+            <div className="flex flex-1 flex-col">
+              <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row lg:overflow-auto">
+                {data?.map((item, index) => {
+                  const id =
+                    item.id.value || item.id.name ? item.id.value + item.id.name : String(index);
 
-                    if (index < 5) {
-                      return (
-                        <CardDriver
-                          id={id}
-                          key={index}
-                          firstName={item.name.first}
-                          lastName={item.name.last}
-                          telpNumber={item.phone}
-                          email={item.email}
-                          birthDate={new Date(item.dob.date)}
-                        />
-                      );
-                    }
-                    return null;
-                  })}
+                  if (index < 5) {
+                    return (
+                      <CardDriver
+                        id={id}
+                        key={index}
+                        firstName={item.name.first}
+                        lastName={item.name.last}
+                        telpNumber={item.phone}
+                        email={item.email}
+                        birthDate={new Date(item.dob.date)}
+                      />
+                    );
+                  }
+                  return null;
+                })}
+              </div>
+              <div className="flex py-5 justify-evenly w-1/2 self-center">
+                <div
+                  className={`flex ${formik.values.hasPrev ? 'cursor-pointer' : 'cursor-default'}`}
+                  onClick={() =>
+                    formik.values.hasPrev ? handleNavigation({ type: 'prev' }) : undefined
+                  }
+                >
+                  <Icon
+                    icon="chevron-left"
+                    size="small"
+                    color={formik.values.hasPrev ? Color.Black : Color.Gray}
+                  />
+                  <Text color={formik.values.hasPrev ? Color.Black : Color.Gray}>
+                    Previous Page
+                  </Text>
                 </div>
-                <div className="flex py-5 justify-evenly w-1/2 self-center">
-                  <div
-                    className={`flex ${
-                      formik.values.hasPrev ? 'cursor-pointer' : 'cursor-default'
-                    }`}
-                    onClick={() =>
-                      formik.values.hasPrev ? handleNavigation({ type: 'prev' }) : undefined
-                    }
-                  >
-                    <Icon
-                      icon="chevron-left"
-                      size="small"
-                      color={formik.values.hasPrev ? Color.Black : Color.Gray}
-                    />
-                    <Text color={formik.values.hasPrev ? Color.Black : Color.Gray}>
-                      Previous Page
-                    </Text>
-                  </div>
-                  <div
-                    className="flex cursor-pointer"
-                    onClick={() =>
-                      formik.values.hasNext ? handleNavigation({ type: 'next' }) : undefined
-                    }
-                  >
-                    <Text color={formik.values.hasNext ? Color.Black : Color.Gray}>Next Page</Text>
-                    <Icon
-                      icon="chevron-right"
-                      size="small"
-                      color={formik.values.hasNext ? Color.Black : Color.Gray}
-                    />
-                  </div>
+                <div
+                  className="flex cursor-pointer"
+                  onClick={() =>
+                    formik.values.hasNext ? handleNavigation({ type: 'next' }) : undefined
+                  }
+                >
+                  <Text color={formik.values.hasNext ? Color.Black : Color.Gray}>Next Page</Text>
+                  <Icon
+                    icon="chevron-right"
+                    size="small"
+                    color={formik.values.hasNext ? Color.Black : Color.Gray}
+                  />
                 </div>
               </div>
-            )
+            </div>
+          ) : (
+            <div className="flex flex-1 justify-center items-center">
+              <Text size="large" color={Color.Orange} transform="capitalize">
+                Data tidak di Temukan
+              </Text>
+            </div>
           )}
         </div>
       </div>
