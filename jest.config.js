@@ -8,5 +8,11 @@ module.exports = {
     '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest'
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths)
+  moduleNameMapper: {
+    '^@components(.*)$': '<rootDir>/src/components$1',
+    '^@lib(.*)$': '<rootDir>/src/lib$1',
+    '^@pages(.*)$': '<rootDir>/src/pages$1',
+    '^@styles(.*)$': '<rootDir>/src/styles$1',
+    '^@utils(.*)$': '<rootDir>/src/utils$1'
+  }
 };
