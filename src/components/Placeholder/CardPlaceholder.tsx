@@ -1,5 +1,5 @@
 const CardPlaceholder = () => (
-  <div className=" border border-gray-400 shadow rounded-lg p-6 lg:h-96 max-w-sm w-full">
+  <div className="w-full border border-gray-400 shadow rounded-lg p-6 lg:h-96">
     <div className="animate-pulse flex py-1 item-center space-x-48 mb-4">
       <div className="flex flex-1 h-2 w-2/12 bg-gray-400 rounded"></div>
       <div className="flex flex-1 h-2 w-2/12 bg-gray-400 rounded"></div>

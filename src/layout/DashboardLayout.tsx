@@ -37,10 +37,10 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => (
         </ul>
       </div>
       <div
-        className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64"
+        className="h-full w-full relative overflow-y-auto lg:ml-64"
         style={{ backgroundColor: Color.GrayBase }}
       >
-        {children}
+        <div className="h-screen">{children}</div>
       </div>
     </div>
   </>

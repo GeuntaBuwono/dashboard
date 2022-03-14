@@ -116,16 +116,14 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
         </div>
         <div className="flex flex-1">
           {isLoading || isFetching ? (
-            <div className="flex flex-1 flex-col">
-              <div className="flex flex-col md:flex-row space-y-6 lg:space-y-0 lg:space-x-5 lg:overflow-auto">
-                {Array.from('12345679', Number).map((index) => (
-                  <CardPlaceholder key={index} />
-                ))}
-              </div>
+            <div className="flex flex-1 flex-col space-y-6 lg:flex-row lg:space-y-0 lg:space-x-5 lg:overflow-auto">
+              {Array.from('12345679', Number).map((index) => (
+                <CardPlaceholder key={index} />
+              ))}
             </div>
           ) : isSuccess && data.length > 0 ? (
             <div className="flex flex-1 flex-col overflow-auto">
-              <div className="flex flex-1 flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row overflow-auto">
+              <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row overflow-auto">
                 {data?.map((item, index) => {
                   const id =
                     item.id.value || item.id.name ? item.id.value + item.id.name : String(index);
