@@ -33,13 +33,12 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
     onSubmit: (values) => {
       if (formik.values.searchQuery) {
         const found: Array<UserInterface> | undefined = data?.filter((element) =>
-          element.name.first.toLowerCase().includes(formik.values.searchQuery.toLowerCase())
+          element.name.first.toLowerCase().includes(values.searchQuery.toLowerCase())
         );
-        queryClient.setQueryData(['users', 0], () => found);
+        queryClient.setQueryData(['users', values.page], () => found);
       } else {
         refetch();
       }
-      alert(JSON.stringify(values, null, 2));
     }
   });
 
@@ -75,7 +74,7 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
         <meta name="description" content="Dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col flex-1 h-full p-6" style={{ backgroundColor: Color.GrayBase }}>
+      <div className="flex flex-1 flex-col h-full p-6">
         <div className="flex flex-col md:flex-row rounded-lg p-5 mb-5 bg-white ">
           <div className="flex flex-1 flex-col mb-4 md:mb-0">
             <Text color={Color.Orange} size="large" weight="bold" transform="uppercase">
@@ -115,16 +114,18 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
             </button>
           </form>
         </div>
-        <div className="flex flex-1 justify-center">
+        <div className="flex flex-1 overflow-auto">
           {isLoading || isFetching ? (
-            <div className="flex flex-row space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row lg:overflow-auto">
-              {Array.from('12345679', Number).map((index) => (
-                <CardPlaceholder key={index} />
-              ))}
+            <div className="flex flex-1 flex-col">
+              <div className="flex flex-col md:flex-row space-y-6 lg:space-y-0 lg:space-x-5 lg:overflow-auto">
+                {Array.from('12345679', Number).map((index) => (
+                  <CardPlaceholder key={index} />
+                ))}
+              </div>
             </div>
           ) : isSuccess && data.length > 0 ? (
             <div className="flex flex-1 flex-col">
-              <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row lg:overflow-auto">
+              <div className="flex flex-1 flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row overflow-auto">
                 {data?.map((item, index) => {
                   const id =
                     item.id.value || item.id.name ? item.id.value + item.id.name : String(index);
@@ -145,7 +146,7 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
                   return null;
                 })}
               </div>
-              <div className="flex py-5 justify-evenly w-1/2 self-center">
+              <div className="flex py-5 justify-evenly lg:w-1/2 lg:self-center">
                 <div
                   className={`flex ${formik.values.hasPrev ? 'cursor-pointer' : 'cursor-default'}`}
                   onClick={() =>

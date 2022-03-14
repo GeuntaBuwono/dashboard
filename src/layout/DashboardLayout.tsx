@@ -19,22 +19,29 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => (
       </div>
       <Image layout="intrinsic" src="/avatar.png" alt="User Image" width={50} height={50} />
     </div>
-    <div className="flex flex-1">
-      <ul className="hidden md:flex flex-col px-6 mt-6 space-y-5 w-1/6">
-        <li className="flex space-x-3">
-          <Icon icon="home" size="small" />
-          <Text>Beranda</Text>
-        </li>
-        <li className="flex space-x-3">
-          <Icon icon="user-circle" size="small" />
-          <Text>Driver Management</Text>
-        </li>
-        <li className="flex space-x-3">
-          <Icon icon="calendar" size="small" />
-          <Text>Pickup</Text>
-        </li>
-      </ul>
-      <div className="h-full w-full md:h-screen">{children}</div>
+    <div className="flex overflow-hidden bg-white">
+      <div className="fixed hidden z-20 h-full top-0 left-0 pt-16 lg:flex flex-shrink-0 flex-col w-64 transition-width duration-75">
+        <ul className="hidden md:flex flex-col px-6 mt-6 space-y-5">
+          <li className="flex space-x-3">
+            <Icon icon="home" size="small" />
+            <Text>Beranda</Text>
+          </li>
+          <li className="flex space-x-3">
+            <Icon icon="user-circle" size="small" />
+            <Text>Driver Management</Text>
+          </li>
+          <li className="flex space-x-3">
+            <Icon icon="calendar" size="small" />
+            <Text>Pickup</Text>
+          </li>
+        </ul>
+      </div>
+      <div
+        className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64"
+        style={{ backgroundColor: Color.GrayBase }}
+      >
+        {children}
+      </div>
     </div>
   </>
 );
