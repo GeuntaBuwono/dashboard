@@ -4,7 +4,15 @@ import { Color } from '@styles/colors';
 import Image from 'next/image';
 import dateFormatter from 'utils/dateFormatter';
 
-const CardDriver = ({ firstName, lastName, telpNumber, email, birthDate, id }: CardDriverProps) => (
+const CardDriver = ({
+  firstName,
+  lastName,
+  telpNumber,
+  email,
+  birthDate,
+  id,
+  image
+}: CardDriverProps) => (
   <div className="lg:w-60 rounded-lg lg:mb-0 bg-white border-b-2 py-2 px-4">
     <div className="flex flex-1 flex-col w-full">
       <div className="flex flex-row">
@@ -18,7 +26,16 @@ const CardDriver = ({ firstName, lastName, telpNumber, email, birthDate, id }: C
       </div>
       <div className="flex flex-row md:flex-col p-5">
         <div className="flex flex-1 justify-center md:justify-start md:mb-4">
-          <Image layout="intrinsic" src="/avatar.png" alt="Vercel Logo" width={150} height={150} />
+          <Image
+            className="rounded-full"
+            layout="fixed"
+            src={image.large}
+            alt="Vercel Logo"
+            width={100}
+            height={100}
+            placeholder="blur"
+            blurDataURL={image.thumbnail}
+          />
         </div>
         <div className="flex flex-1 ml-2 md:ml-0 flex-col justify-center">
           <div className="mt-2">

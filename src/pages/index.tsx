@@ -140,6 +140,7 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
                         telpNumber={item.phone}
                         email={item.email}
                         birthDate={new Date(item.dob.date)}
+                        image={item.picture}
                       />
                     );
                   }

@@ -5,5 +5,8 @@ module.exports = {
   env: {
     BASE_API_URL
   },
+  images: {
+    domains: ['randomuser.me']
+  },
   reactStrictMode: true
 };

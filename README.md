@@ -1,6 +1,5 @@
 ## TODO
 
-- FIX: Add user image to CardDriver
 - TEST: Unit Testing
 - FEAT: Add loaded data to localStorage
 - FEAT: Chunk data to display to user.

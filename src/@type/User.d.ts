@@ -1,3 +1,9 @@
+interface PictureInterface {
+  large: string;
+  medium: string;
+  thumbnail: string;
+}
+
 interface UserInterface {
   gender: string;
   name: {
@@ -47,11 +53,7 @@ interface UserInterface {
     name: string;
     value: string;
   };
-  picture: {
-    large: string;
-    medium: string;
-    thumbnail: string;
-  };
+  picture: PictureInterface;
   nat: string;
 }
 

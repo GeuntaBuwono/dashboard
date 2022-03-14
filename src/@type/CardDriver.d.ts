@@ -5,4 +5,5 @@ interface CardDriverProps {
   telpNumber: string;
   email: string;
   birthDate: Date;
+  image: PictureInterface;
 }
