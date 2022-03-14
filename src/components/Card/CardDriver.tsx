@@ -5,15 +5,13 @@ import Image from 'next/image';
 import dateFormatter from 'utils/dateFormatter';
 
 const CardDriver = ({ firstName, lastName, telpNumber, email, birthDate, id }: CardDriverProps) => (
-  <div className="flex w-full rounded-lg lg:mb-0 bg-white">
-    <div className="flex flex-1 flex-col">
-      <div className="flex border-b-2 py-2 px-4">
-        <div className="flex">
-          <div className="mr-2">
-            <Text color={Color.Gray}>Driver ID</Text>
-          </div>
-          <Text color={Color.Orange}>{id}</Text>
+  <div className="lg:w-60 rounded-lg lg:mb-0 bg-white border-b-2 py-2 px-4">
+    <div className="flex flex-1 flex-col w-full">
+      <div className="flex flex-row">
+        <div className="mr-2">
+          <Text color={Color.Gray}>Driver ID</Text>
         </div>
+        <Text color={Color.Orange}>{id}</Text>
         <div className="flex flex-1 justify-end">
           <Icon icon="dotsHorizontal" color={Color.Gray} size="small" />
         </div>

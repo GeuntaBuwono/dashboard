@@ -1,8 +1,6 @@
 ## TODO
 
-- FIX: Overflow on dashboard page
 - FIX: Add user image to CardDriver
-- FIX: Add fixed width and height layouting
 - TEST: Unit Testing
 - FEAT: Add loaded data to localStorage
 - FEAT: Chunk data to display to user.
