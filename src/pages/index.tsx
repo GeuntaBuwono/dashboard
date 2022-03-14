@@ -5,12 +5,12 @@ import { Text } from '@components/Text';
 import useLocalStorage from '@hooks/useLocalStorage';
 import DashboardLayout from '@layout/DashboardLayout';
 import { Color } from '@styles/colors';
-import _ from 'lodash';
 import { useFormik } from 'formik';
+import _ from 'lodash';
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { getUsers } from 'services/users';
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const queryClient = useQueryClient();
+  const [users, setUsers] = useState<Array<UserInterface>>([]);
 
   const [, setUserStorageData] = useLocalStorage({
     key: 'users',
@@ -38,37 +38,41 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
       hasNext: true
     },
     onSubmit: (values) => {
-      // FIXME: search data
       if (formik.values.searchQuery) {
         const found: Array<UserInterface> | undefined = data?.filter((element) =>
           element.name.first.toLowerCase().includes(values.searchQuery.toLowerCase())
         );
-        queryClient.setQueryData(['users', values.page], () => found);
+        formik.setFieldValue('page', 0);
+        setUsers(found || []);
       } else {
-        refetch();
+        formik.resetForm();
+        data && setUsers(data);
       }
     }
   });
 
-  const { data, isSuccess, isFetching, refetch } = useQuery<Array<UserInterface>>(
+  const { isSuccess, isFetching, data } = useQuery<Array<UserInterface>>(
     ['users', formik.values.page],
     getUsers,
     {
       initialData: props.users,
       refetchOnWindowFocus: false,
       onSuccess: (value) => {
-        setUserStorageData(value);
+        if (users?.length === 0) {
+          setUserStorageData(value);
+          setUsers(value);
+        }
       }
     }
   );
 
   useEffect(() => {
     formik.setFieldValue('hasPrev', formik.values.page !== 0);
-    formik.setFieldValue('hasNext', formik.values.page !== 5);
+    formik.setFieldValue('hasNext', formik.values.page !== _.chunk(users, 5).length - 1);
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formik.values.page]);
+  }, [formik.values.page, users]);
 
   const handleNavigation = ({ type }: { type: 'prev' | 'next' }) => {
     if (type === 'prev') {
@@ -132,10 +136,10 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
                 <CardPlaceholder key={index} />
               ))}
             </div>
-          ) : isSuccess && data.length > 0 ? (
+          ) : isSuccess && users.length > 0 ? (
             <div className="flex flex-1 flex-col overflow-auto">
               <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row overflow-auto">
-                {_.chunk(data, 5)[formik.values.page]?.map((item, index) => {
+                {_.chunk(users, 5)[formik.values.page]?.map((item, index) => {
                   const id =
                     item.id.value || item.id.name ? item.id.value + item.id.name : String(index);
 

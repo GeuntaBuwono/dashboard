@@ -7,8 +7,7 @@ export const getUsers = async () => {
     defaultValue: ''
   });
 
-  // FIXME: search data
-  if (dataUserStorage && dataUserStorage.length > 5) {
+  if (dataUserStorage) {
     return dataUserStorage;
   } else {
     const data = await axiosInstance.get<{
