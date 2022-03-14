@@ -3,7 +3,6 @@ import { Icon } from '@components/Icon';
 import { CardPlaceholder } from '@components/Placeholder';
 import { Text } from '@components/Text';
 import useLocalStorage from '@hooks/useLocalStorage';
-import DashboardLayout from '@layout/DashboardLayout';
 import { Color } from '@styles/colors';
 import { useFormik } from 'formik';
 import _ from 'lodash';
@@ -11,7 +10,8 @@ import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from '
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { getUsers } from 'services/users';
+import { getUsers } from '@services/UserServices';
+import DashboardLayout from '@layout/DashboardLayout';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const users = await getUsers();
