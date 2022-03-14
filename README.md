@@ -1,3 +1,12 @@
+## TODO
+
+- FIX: Overflow on dashboard page
+- FIX: Add user image to CardDriver
+- FIX: Add fixed width and height layouting
+- TEST: Unit Testing
+- FEAT: Add loaded data to localStorage
+- FEAT: Chunk data to display to user.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
