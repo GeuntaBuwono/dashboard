@@ -5,6 +5,7 @@ import { Text } from '@components/Text';
 import useLocalStorage from '@hooks/useLocalStorage';
 import DashboardLayout from '@layout/DashboardLayout';
 import { Color } from '@styles/colors';
+import _ from 'lodash';
 import { useFormik } from 'formik';
 import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
@@ -134,25 +135,22 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
           ) : isSuccess && data.length > 0 ? (
             <div className="flex flex-col overflow-auto">
               <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row overflow-auto">
-                {data?.map((item, index) => {
+                {_.chunk(data, 5)[formik.values.page]?.map((item, index) => {
                   const id =
                     item.id.value || item.id.name ? item.id.value + item.id.name : String(index);
 
-                  if (index < 5) {
-                    return (
-                      <CardDriver
-                        id={id}
-                        key={index}
-                        firstName={item.name.first}
-                        lastName={item.name.last}
-                        telpNumber={item.phone}
-                        email={item.email}
-                        birthDate={new Date(item.dob.date)}
-                        image={item.picture}
-                      />
-                    );
-                  }
-                  return null;
+                  return (
+                    <CardDriver
+                      id={id}
+                      key={index}
+                      firstName={item.name.first}
+                      lastName={item.name.last}
+                      telpNumber={item.phone}
+                      email={item.email}
+                      birthDate={new Date(item.dob.date)}
+                      image={item.picture}
+                    />
+                  );
                 })}
               </div>
               <div className="flex py-5 justify-evenly lg:w-1/2 lg:self-center">
