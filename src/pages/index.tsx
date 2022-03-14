@@ -2,6 +2,7 @@ import { CardDriver } from '@components/Card';
 import { Icon } from '@components/Icon';
 import { CardPlaceholder } from '@components/Placeholder';
 import { Text } from '@components/Text';
+import useLocalStorage from '@hooks/useLocalStorage';
 import DashboardLayout from '@layout/DashboardLayout';
 import { Color } from '@styles/colors';
 import { useFormik } from 'formik';
@@ -23,6 +24,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
 const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const queryClient = useQueryClient();
 
+  const [, setUserStorageData] = useLocalStorage({
+    key: 'users',
+    defaultValue: ''
+  });
+
   const formik = useFormik({
     initialValues: {
       searchQuery: '',
@@ -31,6 +37,7 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
       hasNext: true
     },
     onSubmit: (values) => {
+      // FIXME: search data
       if (formik.values.searchQuery) {
         const found: Array<UserInterface> | undefined = data?.filter((element) =>
           element.name.first.toLowerCase().includes(values.searchQuery.toLowerCase())
@@ -42,12 +49,15 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
     }
   });
 
-  const { data, isSuccess, isLoading, isFetching, refetch } = useQuery<Array<UserInterface>>(
+  const { data, isSuccess, isFetching, refetch } = useQuery<Array<UserInterface>>(
     ['users', formik.values.page],
     getUsers,
     {
       initialData: props.users,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      onSuccess: (value) => {
+        setUserStorageData(value);
+      }
     }
   );
 
@@ -114,15 +124,15 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
             </button>
           </form>
         </div>
-        <div className="flex flex-1">
-          {isLoading || isFetching ? (
+        <div className="flex">
+          {isFetching ? (
             <div className="flex flex-1 flex-col space-y-6 lg:flex-row lg:space-y-0 lg:space-x-5 lg:overflow-auto">
               {Array.from('12345679', Number).map((index) => (
                 <CardPlaceholder key={index} />
               ))}
             </div>
           ) : isSuccess && data.length > 0 ? (
-            <div className="flex flex-1 flex-col overflow-auto">
+            <div className="flex flex-col overflow-auto">
               <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row overflow-auto">
                 {data?.map((item, index) => {
                   const id =

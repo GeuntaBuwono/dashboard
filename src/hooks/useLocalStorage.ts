@@ -5,7 +5,7 @@ interface UseGetStorageProps {
   defaultValue: string;
 }
 
-const getStorageValue = ({ key, defaultValue }: UseGetStorageProps) => {
+export const getStorageValue = ({ key, defaultValue }: UseGetStorageProps) => {
   if (typeof window !== 'undefined') {
     const saved = localStorage.getItem(key);
 
