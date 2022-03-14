@@ -133,7 +133,7 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
               ))}
             </div>
           ) : isSuccess && data.length > 0 ? (
-            <div className="flex flex-col overflow-auto">
+            <div className="flex flex-1 flex-col overflow-auto">
               <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row overflow-auto">
                 {_.chunk(data, 5)[formik.values.page]?.map((item, index) => {
                   const id =
