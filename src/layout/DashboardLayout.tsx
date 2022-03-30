@@ -19,7 +19,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => (
       </div>
       <Image layout="intrinsic" src="/avatar.png" alt="User Image" width={50} height={50} />
     </div>
-    <div className="flex overflow-hidden bg-white">
+    <div className="flex bg-white">
       <div className="fixed hidden z-20 h-full top-0 left-0 pt-16 lg:flex flex-shrink-0 flex-col w-64 transition-width duration-75">
         <ul className="hidden md:flex flex-col px-6 mt-6 space-y-5">
           <li className="flex space-x-3">
@@ -37,10 +37,10 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => (
         </ul>
       </div>
       <div
-        className="h-full w-full relative overflow-y-auto lg:ml-64"
+        className="h-full w-full relative lg:ml-64 lg:overflow-y-auto"
         style={{ backgroundColor: Color.GrayBase }}
       >
-        <div className="h-screen">{children}</div>
+        {children}
       </div>
     </div>
   </>

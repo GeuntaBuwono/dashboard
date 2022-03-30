@@ -89,7 +89,7 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
         <meta name="description" content="Dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-1 flex-col h-full p-6">
+      <div className="flex flex-1 flex-col h-screen p-6">
         <div className="flex flex-col md:flex-row rounded-lg p-5 mb-5 bg-white ">
           <div className="flex flex-1 flex-col mb-4 md:mb-0">
             <Text color={Color.Orange} size="large" weight="bold" transform="uppercase">
@@ -137,8 +137,8 @@ const Home: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideP
               ))}
             </div>
           ) : isSuccess && users.length > 0 ? (
-            <div className="flex flex-1 flex-col overflow-auto">
-              <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row overflow-auto">
+            <div className="flex flex-1 flex-col lg:overflow-auto">
+              <div className="flex flex-col space-y-6 lg:space-y-0 lg:space-x-5 lg:flex-row">
                 {_.chunk(users, 5)[formik.values.page]?.map((item, index) => {
                   const id =
                     item.id.value || item.id.name ? item.id.value + item.id.name : String(index);
